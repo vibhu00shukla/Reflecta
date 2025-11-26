@@ -5,14 +5,15 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import CreateJournal from './pages/CreateJournal';
 import JournalDetail from './pages/JournalDetail';
+import Settings from './pages/Settings';
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
-  const { user, loading } = useAuth();
+  const { token, loading } = useAuth();
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div className="min-h-screen flex justify-center items-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div></div>;
 
-  if (!user) {
+  if (!token) {
     return <Navigate to="/login" />;
   }
 
@@ -47,6 +48,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <JournalDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <Settings />
               </ProtectedRoute>
             }
           />

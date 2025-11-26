@@ -21,15 +21,13 @@ export const AuthProvider = ({ children }) => {
         }
     }, [token]);
 
-    // Check if user is already logged in (optional: verify token with backend)
+    // Check if user is already logged in
     useEffect(() => {
         const initAuth = async () => {
             if (token) {
                 try {
-                    // Ideally call /auth/me here to get user data
-                    // For now, we'll just assume token is valid or wait for a 401 to clear it
-                    // const res = await axios.get('http://localhost:3000/auth/me');
-                    // setUser(res.data.user);
+                    const res = await axios.get('http://localhost:3000/auth/me');
+                    setUser(res.data.user);
                 } catch (error) {
                     console.error("Auth init failed", error);
                     logout();
@@ -64,9 +62,32 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+    const updateProfile = async (data) => {
+        try {
+            const res = await axios.patch('http://localhost:3000/auth/me', data);
+            setUser(res.data.user);
+            return { success: true, message: 'Profile updated successfully' };
+        } catch (error) {
+            console.error("Profile update failed", error);
+            return { success: false, message: error.response?.data?.message || 'Profile update failed' };
+        }
+    };
+
+    const deleteAccount = async () => {
+        try {
+            await axios.delete('http://localhost:3000/auth/me');
+            logout();
+            return { success: true };
+        } catch (error) {
+            console.error("Account deletion failed", error);
+            return { success: false, message: error.response?.data?.message || 'Account deletion failed' };
+        }
+    };
+
     const logout = () => {
         setToken(null);
         setUser(null);
+        localStorage.removeItem('token');
     };
 
     const value = {
@@ -75,6 +96,8 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         logout,
+        updateProfile,
+        deleteAccount,
         loading
     };
 
