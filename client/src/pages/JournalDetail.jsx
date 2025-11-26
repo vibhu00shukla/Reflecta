@@ -114,7 +114,7 @@ const JournalDetail = () => {
                                     <div className="flex flex-wrap gap-2">
                                         {analysis.emotions.map((emotion, idx) => (
                                             <span key={idx} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                                {emotion}
+                                                {typeof emotion === 'string' ? emotion : emotion.name}
                                             </span>
                                         ))}
                                     </div>
@@ -127,7 +127,9 @@ const JournalDetail = () => {
                                     <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Negative Thoughts Identified</h4>
                                     <ul className="list-disc pl-5 space-y-1 text-gray-700">
                                         {analysis.negativeThoughts.map((thought, idx) => (
-                                            <li key={idx}>{thought}</li>
+                                            <li key={idx}>
+                                                {thought && (typeof thought === 'string' ? thought : thought.text)}
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>
@@ -139,7 +141,9 @@ const JournalDetail = () => {
                                     <h4 className="text-sm font-medium text-gray-500 uppercase tracking-wider mb-2">Cognitive Distortions</h4>
                                     <ul className="list-disc pl-5 space-y-1 text-gray-700">
                                         {analysis.distortions.map((distortion, idx) => (
-                                            <li key={idx}>{distortion}</li>
+                                            <li key={idx}>
+                                                {distortion && (typeof distortion === 'string' ? distortion : (distortion.distortionType || distortion.type))}
+                                            </li>
                                         ))}
                                     </ul>
                                 </div>

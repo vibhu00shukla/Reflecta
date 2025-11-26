@@ -7,29 +7,30 @@ const CBTModelSchema = new mongoose.Schema({
     negativeThoughts: [{
         text: { type: String, required: true, maxlength: 1000 },
         excerpt: String
-
     }],
 
     emotions: [{
         name: String,
         score: { type: Number, min: 0, max: 1 }
-
     }],
+
     distortions: [{
         distortionType: String,
         excerpt: String
     }],
+
     evidenceForThoughts: { type: [String], default: [] },
     evidenceAgainstThoughts: { type: [String], default: [] },
 
     reframes: [{
-        text: String
+        originalThought: String,
+        rationalResponse: String
     }],
 
     suggestedActions: [{
-        text: String,
-
+        text: String
     }],
+
     worksheetPrefill: { type: Object, default: {} },
     analysisVersion: { type: String }
 }, { timestamps: true });

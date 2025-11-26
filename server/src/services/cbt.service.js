@@ -53,7 +53,12 @@ module.exports.saveAnalysis = async ({ journalId, userId, analysis }) => {
             : [],
         evidenceForThoughts: Array.isArray(analysis.evidenceForThoughts) ? analysis.evidenceForThoughts : [],
         evidenceAgainstThoughts: Array.isArray(analysis.evidenceAgainstThoughts) ? analysis.evidenceAgainstThoughts : [],
-        reframes: Array.isArray(analysis.reframes) ? analysis.reframes : [],
+        reframes: Array.isArray(analysis.reframes)
+            ? analysis.reframes.map(r => ({
+                originalThought: r.originalThought || r.text || "",
+                rationalResponse: r.rationalResponse || ""
+            }))
+            : [],
         suggestedActions: Array.isArray(analysis.suggestedActions) ? analysis.suggestedActions : [],
         worksheetPrefill: (analysis.worksheetPrefill && typeof analysis.worksheetPrefill === 'object') ? analysis.worksheetPrefill : {},
         analysisVersion: analysis.analysisVersion || null
