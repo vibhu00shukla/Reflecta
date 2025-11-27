@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { Plus, BookOpen, Calendar, ChevronRight, Settings as SettingsIcon } from 'lucide-react';
+import { Plus, BookOpen, Calendar, ChevronRight, Settings as SettingsIcon, LogOut } from 'lucide-react';
 import { motion } from 'framer-motion';
 import CalendarWidget from '../components/CalendarWidget';
+import { useAuth } from '../context/AuthContext';
 
 const Dashboard = () => {
+    const { logout } = useAuth();
     const [journals, setJournals] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -57,6 +59,13 @@ const Dashboard = () => {
                             >
                                 <SettingsIcon className="h-6 w-6" />
                             </Link>
+                            <button
+                                onClick={logout}
+                                className="text-gray-500 hover:text-red-600 transition-colors"
+                                title="Log Out"
+                            >
+                                <LogOut className="h-6 w-6" />
+                            </button>
                             <Link
                                 to="/journal/new"
                                 className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-lg text-white bg-primary-600 hover:bg-primary-700 hover:shadow-primary-500/30 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"

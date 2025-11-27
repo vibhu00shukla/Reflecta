@@ -222,6 +222,105 @@ const JournalDetail = () => {
                             </motion.div>
                         )}
 
+                        {/* Evidence Analysis */}
+                        {(analysis.evidenceForThoughts?.length > 0 || analysis.evidenceAgainstThoughts?.length > 0) && (
+                            <motion.div variants={fadeInUp} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {/* Evidence For */}
+                                {analysis.evidenceForThoughts?.length > 0 && (
+                                    <div className="glass-card rounded-xl p-6 bg-red-50/30 border border-red-100">
+                                        <h4 className="flex items-center text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">
+                                            <AlertCircle className="h-4 w-4 mr-2 text-red-500" />
+                                            Evidence For Thoughts
+                                        </h4>
+                                        <ul className="space-y-2">
+                                            {analysis.evidenceForThoughts.map((item, idx) => (
+                                                <li key={idx} className="flex items-start text-gray-700">
+                                                    <span className="h-1.5 w-1.5 mt-2 rounded-full bg-red-400 mr-2 flex-shrink-0"></span>
+                                                    <span className="text-sm">{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+
+                                {/* Evidence Against */}
+                                {analysis.evidenceAgainstThoughts?.length > 0 && (
+                                    <div className="glass-card rounded-xl p-6 bg-green-50/30 border border-green-100">
+                                        <h4 className="flex items-center text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">
+                                            <CheckCircle className="h-4 w-4 mr-2 text-green-500" />
+                                            Evidence Against Thoughts
+                                        </h4>
+                                        <ul className="space-y-2">
+                                            {analysis.evidenceAgainstThoughts.map((item, idx) => (
+                                                <li key={idx} className="flex items-start text-gray-700">
+                                                    <span className="h-1.5 w-1.5 mt-2 rounded-full bg-green-400 mr-2 flex-shrink-0"></span>
+                                                    <span className="text-sm">{item}</span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </motion.div>
+                        )}
+
+                        {/* Suggested Actions */}
+                        {analysis.suggestedActions && analysis.suggestedActions.length > 0 && (
+                            <motion.div variants={fadeInUp} className="glass-card rounded-xl p-6">
+                                <h4 className="flex items-center text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">
+                                    <Activity className="h-4 w-4 mr-2 text-purple-500" />
+                                    Suggested Actions
+                                </h4>
+                                <div className="space-y-3">
+                                    {analysis.suggestedActions.map((action, idx) => (
+                                        <div key={idx} className="flex items-start p-3 bg-purple-50/50 rounded-lg border border-purple-100">
+                                            <div className="flex-shrink-0 h-5 w-5 flex items-center justify-center rounded border border-purple-300 bg-white mt-0.5 mr-3">
+                                                <div className="h-2.5 w-2.5 rounded-sm bg-purple-500"></div>
+                                            </div>
+                                            <p className="text-gray-800 text-sm font-medium">
+                                                {typeof action === 'string' ? action : action.text}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </motion.div>
+                        )}
+
+                        {/* Worksheet Prefill */}
+                        {analysis.worksheetPrefill && (
+                            <motion.div variants={fadeInUp} className="glass-card rounded-xl p-6 border-t-4 border-t-indigo-500">
+                                <h4 className="flex items-center text-sm font-bold text-gray-500 uppercase tracking-wider mb-6">
+                                    <Brain className="h-4 w-4 mr-2 text-indigo-500" />
+                                    CBT Worksheet Preview
+                                </h4>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-semibold text-gray-400 uppercase">Situation</label>
+                                        <p className="text-gray-800 bg-gray-50 p-3 rounded-lg text-sm border border-gray-100">
+                                            {analysis.worksheetPrefill.situation || "N/A"}
+                                        </p>
+                                    </div>
+                                    <div className="space-y-1">
+                                        <label className="text-xs font-semibold text-gray-400 uppercase">Emotion</label>
+                                        <p className="text-gray-800 bg-gray-50 p-3 rounded-lg text-sm border border-gray-100">
+                                            {analysis.worksheetPrefill.emotion || "N/A"}
+                                        </p>
+                                    </div>
+                                    <div className="space-y-1 md:col-span-2">
+                                        <label className="text-xs font-semibold text-gray-400 uppercase">Automatic Thought</label>
+                                        <p className="text-gray-800 bg-red-50 p-3 rounded-lg text-sm border border-red-100">
+                                            {analysis.worksheetPrefill.thought || "N/A"}
+                                        </p>
+                                    </div>
+                                    <div className="space-y-1 md:col-span-2">
+                                        <label className="text-xs font-semibold text-gray-400 uppercase">Alternative Thought</label>
+                                        <p className="text-gray-800 bg-green-50 p-3 rounded-lg text-sm border border-green-100 font-medium">
+                                            {analysis.worksheetPrefill.alternativeThought || "N/A"}
+                                        </p>
+                                    </div>
+                                </div>
+                            </motion.div>
+                        )}
+
                     </motion.div>
                 ) : (
                     <motion.div

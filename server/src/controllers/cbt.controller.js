@@ -6,7 +6,15 @@ module.exports.getAnalysisForJournal = async (req, res, next) => {
     const userId = req.user._id;
     const journalId = req.params.journalId;
 
+    console.log(`[CBT Controller] Fetching analysis for journal ${journalId} user ${userId}`);
+
     const analysis = await cbtService.getByJournal(userId, journalId);
+
+    if (!analysis) {
+      console.log(`[CBT Controller] No analysis found for journal ${journalId}`);
+    } else {
+      console.log(`[CBT Controller] Found analysis for journal ${journalId}`);
+    }
 
     return res.status(200).json({ analysis });
   } catch (err) {
@@ -22,7 +30,7 @@ module.exports.listUserAnalyses = async (req, res, next) => {
 
     const result = await cbtService.listByUser(userId, { page, limit });
 
-    return res.status(200).json(result); 
+    return res.status(200).json(result);
     // expected shape: { items, total, page, limit }
   } catch (err) {
     next(err);

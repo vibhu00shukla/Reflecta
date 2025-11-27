@@ -3,7 +3,6 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const genAI = GEMINI_API_KEY ? new GoogleGenerativeAI(GEMINI_API_KEY) : null;
-const model = genAI ? genAI.getGenerativeModel({ model: "gemini-2.0-flash" }) : null;
 
 const MAX_CHARS = 12000;
 
@@ -34,7 +33,7 @@ function simpleMockAnalysis(text) {
 async function analyzeText(entryText, options = {}) {
   if (!entryText) return simpleMockAnalysis('');
 
-  if (options.mockOnly || !model) {
+  if (options.mockOnly || !genAI) {
     console.log("Using mock analysis (Gemini key missing or mock requested)");
     return simpleMockAnalysis(entryText);
   }
@@ -64,18 +63,31 @@ async function analyzeText(entryText, options = {}) {
     Return ONLY valid JSON. Do not use markdown code blocks.
   `;
 
-  try {
+  // Helper to try a specific model
+  const tryModel = async (modelName) => {
+    console.log(`Attempting analysis with model: ${modelName}`);
+    const model = genAI.getGenerativeModel({ model: modelName });
     const result = await model.generateContent(prompt);
     const response = await result.response;
     let text = response.text();
-
-    // Clean up markdown code blocks if present
     text = text.replace(/```json/g, '').replace(/```/g, '').trim();
-
     return JSON.parse(text);
-  } catch (error) {
-    console.error("Gemini API error:", error);
-    return simpleMockAnalysis(entryText);
+  };
+
+  try {
+    // Try primary model (verified working)
+    return await tryModel("gemini-flash-latest");
+  } catch (error1) {
+    console.warn("Primary model (gemini-flash-latest) failed:", error1.message);
+
+    try {
+      // Try fallback model
+      return await tryModel("gemini-pro-latest");
+    } catch (error2) {
+      console.error("Fallback model (gemini-pro-latest) also failed:", error2.message);
+      console.error("All AI attempts failed. Returning mock analysis.");
+      return simpleMockAnalysis(entryText);
+    }
   }
 }
 

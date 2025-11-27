@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
-import { User, Lock, Trash2, Save, AlertTriangle, CheckCircle, ArrowLeft } from 'lucide-react';
+import { User, Lock, Trash2, Save, AlertTriangle, CheckCircle, ArrowLeft, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Settings = () => {
-    const { user, updateProfile, deleteAccount } = useAuth();
+    const { user, updateProfile, deleteAccount, logout } = useAuth();
     const [activeTab, setActiveTab] = useState('profile');
     const [message, setMessage] = useState({ type: '', text: '' });
     const [loading, setLoading] = useState(false);
@@ -105,6 +105,14 @@ const Settings = () => {
                                 >
                                     <Trash2 className="h-4 w-4 mr-3" />
                                     Danger Zone
+                                </button>
+                                <div className="border-t border-gray-100 my-2"></div>
+                                <button
+                                    onClick={logout}
+                                    className="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-red-50 hover:text-red-700 transition-colors w-full text-left"
+                                >
+                                    <LogOut className="h-4 w-4 mr-3" />
+                                    Log Out
                                 </button>
                             </nav>
                         </div>

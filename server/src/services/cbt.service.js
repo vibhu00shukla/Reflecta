@@ -47,7 +47,9 @@ module.exports.saveAnalysis = async ({ journalId, userId, analysis }) => {
         negativeThoughts: Array.isArray(analysis.negativeThoughts)
             ? analysis.negativeThoughts.map(t => ({ text: extractText(t) }))
             : [],
-        emotions: Array.isArray(analysis.emotions) ? analysis.emotions : [],
+        emotions: Array.isArray(analysis.emotions)
+            ? analysis.emotions.map(e => typeof e === 'string' ? { name: e, score: 0.5 } : e)
+            : [],
         distortions: Array.isArray(analysis.distortions)
             ? analysis.distortions.map(d => ({ distortionType: extractType(d) }))
             : [],
@@ -89,7 +91,9 @@ module.exports.saveAnalysis = async ({ journalId, userId, analysis }) => {
  */
 module.exports.getByJournal = async (userId, journalId) => {
     if (!userId || !journalId) return null;
+    console.log(`[CBT Service] Querying CBTModel for journalId: ${journalId}, userId: ${userId}`);
     const doc = await CBTModel.findOne({ journalId, userId }).lean();
+    console.log(`[CBT Service] Found doc: ${doc ? 'yes' : 'no'}`);
     return doc;
 };
 
