@@ -1,8 +1,7 @@
 const http = require('http');
-const healthRoutes = require('./src/routes/health.routes');
+const app = require('./src/app');
 const { startWorker } = require('./worker');
 
-const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Start the worker in the background
