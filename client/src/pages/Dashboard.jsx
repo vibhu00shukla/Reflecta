@@ -6,6 +6,8 @@ import { motion } from 'framer-motion';
 import CalendarWidget from '../components/CalendarWidget';
 import { useAuth } from '../context/AuthContext';
 
+import API_URL from '../config';
+
 const Dashboard = () => {
     const { logout } = useAuth();
     const [journals, setJournals] = useState([]);
@@ -14,7 +16,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchJournals = async () => {
             try {
-                const res = await axios.get('http://localhost:3000/journals');
+                const res = await axios.get(`${API_URL}/journals`);
                 setJournals(res.data.items || []);
             } catch (error) {
                 console.error("Failed to fetch journals", error);

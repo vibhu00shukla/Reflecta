@@ -74,8 +74,23 @@ async function workLoop() {
   }
 }
 
-// Start worker
-(async () => {
-  await connectDB();
-  await workLoop();
-})();
+// Start worker function
+const startWorker = async () => {
+  try {
+    await connectDB();
+    console.log("Worker started successfully");
+    workLoop(); // Start the loop without awaiting it to allow non-blocking execution if needed, 
+    // but since we want it to run in background, we just call it.
+    // However, in this single-process model, we might want to ensure it doesn't block the event loop.
+    // The workLoop is async and uses await inside, so it returns a promise and yields control.
+  } catch (err) {
+    console.error("Failed to start worker:", err);
+  }
+};
+
+// If running directly (node worker.js)
+if (require.main === module) {
+  startWorker();
+}
+
+module.exports = { startWorker };

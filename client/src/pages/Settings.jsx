@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { motion } from 'framer-motion';
 import { User, Lock, Trash2, Save, AlertTriangle, CheckCircle, ArrowLeft, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import API_URL from '../config';
 
 const Settings = () => {
     const { user, updateProfile, deleteAccount, logout } = useAuth();

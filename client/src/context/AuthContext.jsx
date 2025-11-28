@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import API_URL from '../config';
 
 const AuthContext = createContext();
 
@@ -26,7 +27,7 @@ export const AuthProvider = ({ children }) => {
         const initAuth = async () => {
             if (token) {
                 try {
-                    const res = await axios.get('http://localhost:3000/auth/me');
+                    const res = await axios.get(`${API_URL}/auth/me`);
                     setUser(res.data.user);
                 } catch (error) {
                     console.error("Auth init failed", error);
@@ -40,7 +41,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const res = await axios.post('http://localhost:3000/auth/login', { email, password });
+            const res = await axios.post(`${API_URL}/auth/login`, { email, password });
             setToken(res.data.token);
             setUser(res.data.user);
             return { success: true };
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (name, email, password) => {
         try {
-            const res = await axios.post('http://localhost:3000/auth/register', { name, email, password });
+            const res = await axios.post(`${API_URL}/auth/register`, { name, email, password });
             setToken(res.data.token);
             setUser(res.data.user);
             return { success: true };
@@ -64,7 +65,7 @@ export const AuthProvider = ({ children }) => {
 
     const updateProfile = async (data) => {
         try {
-            const res = await axios.patch('http://localhost:3000/auth/me', data);
+            const res = await axios.patch(`${API_URL}/auth/me`, data);
             setUser(res.data.user);
             return { success: true, message: 'Profile updated successfully' };
         } catch (error) {
@@ -75,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 
     const deleteAccount = async () => {
         try {
-            await axios.delete('http://localhost:3000/auth/me');
+            await axios.delete(`${API_URL}/auth/me`);
             logout();
             return { success: true };
         } catch (error) {

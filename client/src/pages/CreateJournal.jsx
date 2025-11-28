@@ -5,6 +5,8 @@ import axios from 'axios';
 import { ArrowLeft, Save, Sparkles, Smile, Frown, Meh, Calendar } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import API_URL from '../config';
+
 const CreateJournal = () => {
     const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm({
         defaultValues: {
@@ -19,7 +21,7 @@ const CreateJournal = () => {
     const onSubmit = async (data) => {
         setSubmitting(true);
         try {
-            await axios.post('http://localhost:3000/journals', data);
+            await axios.post(`${API_URL}/journals`, data);
             navigate('/');
         } catch (error) {
             console.error("Failed to create journal", error);

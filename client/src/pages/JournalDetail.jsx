@@ -4,6 +4,8 @@ import axios from 'axios';
 import { ArrowLeft, Trash2, Calendar, Brain, Lightbulb, Activity, AlertCircle, CheckCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
+import API_URL from '../config';
+
 const JournalDetail = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -14,11 +16,11 @@ const JournalDetail = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const journalRes = await axios.get(`http://localhost:3000/journals/${id}`);
+                const journalRes = await axios.get(`${API_URL}/journals/${id}`);
                 setJournal(journalRes.data.journal);
 
                 try {
-                    const analysisRes = await axios.get(`http://localhost:3000/cbt/journal/${id}`);
+                    const analysisRes = await axios.get(`${API_URL}/cbt/journal/${id}`);
                     setAnalysis(analysisRes.data.analysis);
                 } catch (err) {
                     console.log("No analysis found or error fetching it", err);
@@ -36,7 +38,7 @@ const JournalDetail = () => {
     const handleDelete = async () => {
         if (window.confirm("Are you sure you want to delete this journal?")) {
             try {
-                await axios.delete(`http://localhost:3000/journals/${id}`);
+                await axios.delete(`${API_URL}/journals/${id}`);
                 navigate('/');
             } catch (error) {
                 console.error("Failed to delete journal", error);
